@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BlogPost extends Model
+class Comment extends Model
 {
-    protected $fillable = ['title', 'content'];
-
     use HasFactory;
 
-    public function comments()
+    public function author()
     {
-        $this->hasMany('App\Models\Comment');
+        return $this->belongsTo('App\Models\BlogPost');
     }
+
 }
