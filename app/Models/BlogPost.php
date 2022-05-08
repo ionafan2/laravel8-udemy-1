@@ -13,6 +13,6 @@ class BlogPost extends Model
 
     public function comments()
     {
-        $this->hasMany('App\Models\Comment');
+        return $this->hasMany('App\Models\Comment');
     }
 }
