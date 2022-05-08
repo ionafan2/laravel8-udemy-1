@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7.38
+    restart: unless-stopped
+    tty: true
+    environment:
+        MYSQL_DATABASE: homestaed
+        MYSQL_USER: homestaed
+        MYSQL_PASSWORD: homestaed
+        MYSQL_ROOT_PASSWORD: udemy #required
+        SERVICE_TAG: dev
+        SERVICE_NAME: mysql
+    ports:
+        - "3306:3306"
+    volumes:
+        - ../testlaravel/.var/mysql/data:/var/lib/mysql
+    networks:
+        - udemylaravel
+
+  fpm:
+    build: ./config/docker/containers/fpm
+    depends_on:
+      - mysql
+    volumes:
+      - ../testlaravel:/var/www/html
+      - ../testlaravel/.var/logs/fpm:/var/log
+    networks:
+      - udemylaravel
+
+  nginx:
+    build: ./config/docker/containers/nginx
+    depends_on:
+      - fpm
+    volumes:
+      - ../testlaravel:/var/www/html
+      - ../testlaravel/.var/logs/nginx:/var/log/nginx
+    ports:
+      - "80:80"
+    networks:
+      - udemylaravel
+
+networks:
+  udemylaravel:
