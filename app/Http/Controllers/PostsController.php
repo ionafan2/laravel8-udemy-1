@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class PostsController extends Controller
 {
@@ -22,7 +23,6 @@ class PostsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -34,7 +34,6 @@ class PostsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -44,8 +43,7 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param StorePost $request
      */
     public function store(StorePost $request)
     {
@@ -64,7 +62,6 @@ class PostsController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -75,23 +72,27 @@ class PostsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        return view('posts.edit', ["post" => BlogPost::findOrFail($id)]);
+        $post = BlogPost::findOrFail($id);
+
+        $this->authorize('update-blog-post', $post);
+
+        return view('posts.edit', ["post" => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StorePost $request
      * @param int $id
-     * @return \Illuminate\Http\Response
      */
     public function update(StorePost $request, $id)
     {
         $post = BlogPost::findOrFail($id);
+
+        $this->authorize('update-blog-post', $post);
 
         $validated = $request->validated();
         $post->fill($validated);
@@ -106,11 +107,16 @@ class PostsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $post = BlogPost::findOrFail($id);
+
+//        if (Gate::denies('delete-blog-post', $post)) {
+//            abort(403, 'No mister! It is not yours!');
+//        }
+        $this->authorize('delete-blog-post', $post);
+
         $post->delete();
 
         session()->flash('status', "Deleted");
