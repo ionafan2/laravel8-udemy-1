@@ -30,4 +30,16 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    public function johnDoe()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'John Doe',
+                'email' => 'john.doe@mail.com',
+                'password' => '$2y$10$pb/miOlBZdc.67rdIJe/vOrG81wbUXCLcoVMba1G4GKKCSOE6rFbi', // T#7Dg@1JmL2v*nRN*HcI
+            ];
+        });
+    }
+
 }
