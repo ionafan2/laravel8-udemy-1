@@ -22,7 +22,7 @@ class PostTest extends TestCase
         $response->assertSeeText('No Posts');
     }
 
-    public function testSeeOneBlogPost()
+    public function testSeeOneBlogPostNoComments()
     {
         $post = $this->getDummyPost();
 
