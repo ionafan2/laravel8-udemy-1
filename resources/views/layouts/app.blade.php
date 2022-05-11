@@ -26,7 +26,7 @@
                 {{session('status')}}
             </div>
         @endif
-        <div>@yield("content")</div>
+        @yield("content")
     </div>
 </body>
 </html>
