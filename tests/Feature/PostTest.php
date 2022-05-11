@@ -60,7 +60,8 @@ class PostTest extends TestCase
     {
         $params = ['title' => "New Title", 'content' => 'new content'];
 
-        $this->post('/posts', $params)
+        $this->actingAs($this->user())
+            ->post('/posts', $params)
             ->assertStatus(302)
             ->assertSessionHas('status', 'Created!');
 
@@ -70,7 +71,8 @@ class PostTest extends TestCase
     {
         $params = ['title' => "New", 'content' => 'new content'];
 
-        $this->post('/posts', $params)
+        $this->actingAs($this->user())
+            ->post('/posts', $params)
             ->assertStatus(302)
             ->assertSessionHas('errors');
 
@@ -89,7 +91,8 @@ class PostTest extends TestCase
 
         $params = ['title' => "New Edited Version", 'content' => 'new content version'];
 
-        $this->put("/posts/{$post->id}", $params)
+        $this->actingAs($this->user())
+            ->put("/posts/{$post->id}", $params)
             ->assertStatus(302)
             ->assertSessionHas('status', 'Updated!');
 
@@ -115,7 +118,8 @@ class PostTest extends TestCase
             'title' => 'New blog post'
         ]);
 
-        $this->delete("/posts/{$post->id}")
+        $this->actingAs($this->user())
+            ->delete("/posts/{$post->id}")
             ->assertStatus(302)
             ->assertSessionHas('status', 'Deleted');
 
