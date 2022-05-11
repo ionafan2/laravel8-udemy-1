@@ -17,7 +17,14 @@ class CommentsTableSeeder extends Seeder
     {
         $posts = BlogPost::all();
 
-        Comment::factory()->count(150)->make()->each(function ($comment) use ($posts) {
+        if($posts->isEmpty()) {
+            $this->command->warn('No Posts in Database! No comments will be generated!');
+            return;
+        }
+
+        $count = (int)$this->command->ask('How many posts?', 150);
+
+        Comment::factory()->count($count)->make()->each(function ($comment) use ($posts) {
             $comment->blog_post_id = $posts->random()->id;
             $comment->save();
         });
