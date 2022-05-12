@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 
 class PostsController extends Controller
 {
@@ -77,7 +75,7 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
 
-        $this->authorize('update-blog-post', $post);
+        $this->authorize($post);
 
         return view('posts.edit', ["post" => $post]);
     }
@@ -92,7 +90,7 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
 
-        $this->authorize('update-blog-post', $post);
+        $this->authorize($post);
 
         $validated = $request->validated();
         $post->fill($validated);
@@ -115,7 +113,8 @@ class PostsController extends Controller
 //        if (Gate::denies('delete-blog-post', $post)) {
 //            abort(403, 'No mister! It is not yours!');
 //        }
-        $this->authorize('delete-blog-post', $post);
+//        $this->authorize('delete-blog-post', $post);
+        $this->authorize($post);
 
         $post->delete();
 
