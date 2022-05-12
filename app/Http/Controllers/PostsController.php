@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\User;
 
 class PostsController extends Controller
 {
@@ -24,12 +25,10 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $all = BlogPost::withCount('comments')->get();
-        $mostCommentedPosts = BlogPost::mostCommented()->withCount('comments')->take(5)->get();
-
         return view('posts.index', [
-            'posts' => $all,
-            'mostCommentedPosts' => $mostCommentedPosts
+            'posts' => BlogPost::withCount('comments')->get(),
+            'mostCommentedPosts' => BlogPost::mostCommented()->withCount('comments')->take(5)->get(),
+            'mostActive' => User::mostBlogPosts()->take(5)->get(),
         ]);
     }
 
