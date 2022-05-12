@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 class BlogPost extends Model
 {
@@ -27,6 +27,11 @@ class BlogPost extends Model
     public function scopeLatest(Builder $qb)
     {
         return $qb->orderByDesc(static::CREATED_AT);
+    }
+
+    public function scopeMostCommented(Builder $qb)
+    {
+        return $qb->withCount('comments')->orderByDesc('comments_count');
     }
 
     public static function boot()
