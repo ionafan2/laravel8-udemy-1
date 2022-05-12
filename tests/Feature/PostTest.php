@@ -25,7 +25,7 @@ class PostTest extends TestCase
 
     public function testSeeOneBlogPostNoComments()
     {
-        $post = $this->getDummyPost();
+        $this->getDummyPost();
 
         $response = $this->get('/posts');
 
@@ -64,7 +64,6 @@ class PostTest extends TestCase
             ->post('/posts', $params)
             ->assertStatus(302)
             ->assertSessionHas('status', 'Created!');
-
     }
 
     public function testStoreFail()
@@ -83,7 +82,8 @@ class PostTest extends TestCase
 
     public function testUpdateWorks()
     {
-        $post = $this->getDummyPost();
+        $user = $this->user();
+        $post = $this->getDummyPost($user->id);
 
         $this->assertDatabaseHas('blog_posts', [
             'title' => 'New blog post'
@@ -91,7 +91,7 @@ class PostTest extends TestCase
 
         $params = ['title' => "New Edited Version", 'content' => 'new content version'];
 
-        $this->actingAs($this->user())
+        $this->actingAs($user)
             ->put("/posts/{$post->id}", $params)
             ->assertStatus(302)
             ->assertSessionHas('status', 'Updated!');
@@ -105,25 +105,27 @@ class PostTest extends TestCase
         ]);
     }
 
-    protected function getDummyPost(): BlogPost
+    protected function getDummyPost($userId = null): BlogPost
     {
-        return BlogPost::factory()->testNewTile()->create();
+        return BlogPost::factory()->testNewTile()->create([
+            'user_id' => $userId ?? $this->user()->id
+        ]);
     }
 
     public function testDeletePost()
     {
-        $post = $this->getDummyPost();
+        $user = $this->user();
+        $post = $this->getDummyPost($user->id);
 
         $this->assertDatabaseHas('blog_posts', [
             'title' => 'New blog post'
         ]);
 
-        $this->actingAs($this->user())
+        $this->actingAs($user)
             ->delete("/posts/{$post->id}")
             ->assertStatus(302)
             ->assertSessionHas('status', 'Deleted');
 
         $this->assertSoftDeleted('blog_posts', ['id' => $post->id]);
     }
-
 }
