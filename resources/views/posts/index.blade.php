@@ -5,11 +5,11 @@
 @section('content')
     <div class="row">
         <div class="col-8">
-    @forelse($posts as $key => $post)
-        @include('posts.partials.post')
-    @empty
-        No Posts
-    @endforelse
+            @forelse($posts as $key => $post)
+                @include('posts.partials.post')
+            @empty
+                No Posts
+            @endforelse
         </div>
         <div class="col-4">
             <div class="container">
@@ -39,7 +39,7 @@
                         <ul class="list-group list-group-flush">
                             @foreach($mostActive as $user)
                                 <li class="list-group-item">
-                                        {{$user->name}}
+                                    {{$user->name}}
                                     <span class="text-muted"> {{$user->blog_posts_count}} total posts</span>
                                 </li>
                             @endforeach
@@ -55,7 +55,7 @@
                         <ul class="list-group list-group-flush">
                             @foreach($mostActiveLastMonth as $user)
                                 <li class="list-group-item">
-                                        {{$user->name}}
+                                    {{$user->name}}
                                     <span class="text-muted"> {{$user->blog_posts_count}} total posts</span>
                                 </li>
                             @endforeach
