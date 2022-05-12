@@ -13,7 +13,7 @@
         </div>
         <div class="col-4">
             <div class="container">
-                <div class="row mb-2">
+                <div class="row mb-3">
                     <div class="card" style="width: 100%;">
                         <div class="card-body">
                             <h5 class="card-title">Most Commented</h5>
@@ -30,7 +30,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-3">
                     <div class="card" style="width: 100%;">
                         <div class="card-body">
                             <h5 class="card-title">Most Active</h5>
@@ -38,9 +38,24 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             @foreach($mostActive as $user)
-                                <li class="list-group-item"><a href="{{route('posts.show', ['post' => $mcPost->id] )}}">
+                                <li class="list-group-item">
                                         {{$user->name}}
-                                    </a><br>
+                                    <span class="text-muted"> {{$user->blog_posts_count}} total posts</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title">Most Active Last Month</h5>
+                            <p class="card-text text-muted">Users with most posts published last month. </p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @foreach($mostActiveLastMonth as $user)
+                                <li class="list-group-item">
+                                        {{$user->name}}
                                     <span class="text-muted"> {{$user->blog_posts_count}} total posts</span>
                                 </li>
                             @endforeach
