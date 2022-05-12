@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 
 class BlogPost extends Model
 {
@@ -16,7 +16,7 @@ class BlogPost extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->latest();
     }
 
     public function user()
@@ -24,11 +24,16 @@ class BlogPost extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopeLatest(Builder $qb)
+    {
+        return $qb->orderByDesc(static::CREATED_AT);
+    }
+
     public static function boot()
     {
         parent::boot();
 
-        static::addGlobalScope(new LatestScope());
+//        static::addGlobalScope(new LatestScope());
 
         static::deleting(function (BlogPost $blogPost) {
             $blogPost->comments()->delete();
