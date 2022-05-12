@@ -24,7 +24,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = BlogPost::withCount('comments')->get();
+        $posts = BlogPost::withCount('comments')->orderBy('created_at', 'desc')->get();
 
         return view('posts.index', ['posts' => $posts]);
     }
@@ -45,13 +45,11 @@ class PostsController extends Controller
      */
     public function store(StorePost $request)
     {
-
         $validated = $request->validated();
 
-        $post = BlogPost::create($validated);
+        $post = BlogPost::create(array_merge($validated, ['user_id' => $request->user()->id]));
 
         $request->session()->flash('status', 'Created!');
-
 
         return redirect()->route('posts.show', ['post' => $post->id]);
     }
