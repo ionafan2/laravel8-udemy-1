@@ -3,12 +3,12 @@
 @section("title", $post->title)
 
 @section('content')
-    <h1>{{ $post->title }}</h1>
+    <h1>
+        {{ $post->title }}
+        <x-badge hide="{{ now()->diffInMinutes($post->created_at) > 10}}" >New post !</x-badge>
+    </h1>
     <p>{{ $post->content }}</p>
     <p>Added {{$post->created_at->diffForHumans()}}</p>
-    @if(now()->diffInMinutes($post->created_at) < 34)
-        <x-badge type="primary">Test</x-badge>
-    @endif
 
     <h4>Comments</h4>
     @forelse($post->comments as $comment)

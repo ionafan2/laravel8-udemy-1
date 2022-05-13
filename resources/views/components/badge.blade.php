@@ -1,1 +1,3 @@
-<div class="badge badge-{{$type ?? 'success'}}">{{$slot}}</div>
+@if(!isset($hide) || !$hide)
+<span class="badge badge-{{$type ?? 'success'}}">{{$slot}}</span>
+@endif
