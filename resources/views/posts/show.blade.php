@@ -6,10 +6,8 @@
     <h1>{{ $post->title }}</h1>
     <p>{{ $post->content }}</p>
     <p>Added {{$post->created_at->diffForHumans()}}</p>
-    @if(now()->diffInMinutes($post->created_at) < 20)
-        @component('badge', ['type' => 'primary'])
-            Brand new!
-        @endcomponent
+    @if(now()->diffInMinutes($post->created_at) < 34)
+        <x-badge type="primary">Test</x-badge>
     @endif
 
     <h4>Comments</h4>
