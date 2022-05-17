@@ -12,7 +12,7 @@ RUN apt-get update \
         vim \
         unzip
 
-RUN pecl install xdebug apcu apcu mcrypt \
+RUN pecl install xdebug apcu mcrypt redis \
     && docker-php-ext-install \
         gd \
         exif \
@@ -23,12 +23,14 @@ RUN pecl install xdebug apcu apcu mcrypt \
         mysqli \
         sockets \
         xsl \
-        intl \
-    && docker-php-ext-enable \
+        intl
+
+RUN docker-php-ext-enable \
         xdebug \
         apcu \
         mcrypt \
-        pdo_mysql
+        pdo_mysql \
+        redis
 
 RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/xdebug.ini \
