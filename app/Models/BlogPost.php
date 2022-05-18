@@ -26,6 +26,11 @@ class BlogPost extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function scopeLatest(Builder $qb)
     {
         return $qb->orderByDesc(static::CREATED_AT);
