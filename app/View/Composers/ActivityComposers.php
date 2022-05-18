@@ -23,12 +23,12 @@ class ActivityComposers
     /**
      * Bind data to the view.
      *
-     * @param  \Illuminate\View\View  $view
+     * @param \Illuminate\View\View $view
      * @return void
      */
     public function compose(View $view)
     {
-        $mostCommentedPosts = Cache::remember('blog-post-mostCommented', now()->addSeconds(60), function () {
+        $mostCommentedPosts = Cache::tags(['blog-post'])->remember('blog-post-mostCommented', now()->addSeconds(60), function () {
             return BlogPost::mostCommented()->withCount('comments')->take(5)->get();
         });
         $mostActiveUsers = Cache::remember('users-mostActive', now()->addSeconds(60), function () {
@@ -39,8 +39,8 @@ class ActivityComposers
         });
 
         $view->with('mostCommentedPosts', $mostCommentedPosts);
-        $view->with('mostActiveUsers',$mostActiveUsers );
-        $view->with('mostActiveUsersLastMonth',$mostActiveUsersLastMonth );
+        $view->with('mostActiveUsers', $mostActiveUsers);
+        $view->with('mostActiveUsersLastMonth', $mostActiveUsersLastMonth);
     }
 
 }

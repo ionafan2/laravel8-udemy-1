@@ -47,7 +47,7 @@ class BlogPost extends Model
         parent::boot();
 
         static::updated(function (BlogPost $blogPost) {
-            Cache::forget("blog-post-{$blogPost->id}");
+            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
 
         static::deleting(function (BlogPost $blogPost) {
