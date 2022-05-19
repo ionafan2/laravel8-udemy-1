@@ -1,12 +1,13 @@
 <?php /** @noinspection ALL */
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostTagController;
+use App\Http\Controllers\UserControler;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AboutController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,3 +33,5 @@ Route::get('/posts/tag/{id}', [PostTagController::class, 'index'])
     ->name('posts.tags.index');
 
 Route::resource('posts.comments', PostCommentController::class)->only(['store']);
+
+Route::resource('user', UserControler::class)->only(['show', 'edit', 'update']);
