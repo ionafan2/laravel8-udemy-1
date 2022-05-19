@@ -24,7 +24,8 @@
             <p>{{ $post->content }}</p>
 
             <p>
-                <x-updated :date="$post->created_at" name="{{$post->user->name}}">Added</x-updated>
+                <x-updated :date="$post->created_at" :name="$post->user->name" :userId="$post->user->id">Added
+                </x-updated>
             </p>
             <p>
                 <x-updated :date="$post->updated_at">Updated</x-updated>
