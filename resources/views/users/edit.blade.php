@@ -10,8 +10,10 @@
 
         <div class="row">
             <div class="col-4">
-                <img src="" class="rounded mx-auto d-block"/>
-
+                <img src="{{$user->image ? $user->image->url() : ''}}" class="rounded mx-auto d-block"/>
+                @error('avatar')
+                <div class="alert alert-danger">{{$message}}</div>
+                @enderror
                 <div class="card mt-4">
                     <div class="card-body">
                         <h6>Upload a different photo</h6>

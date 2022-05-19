@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-4">
-            <img class="rounded mx-auto d-block" src=""/>
+            <img class="rounded mx-auto d-block" src="{{$user->image ? $user->image->url() : ''}}"/>
         </div>
         <div class="col-8">
             <h3>{{ $user->name }}</h3>
