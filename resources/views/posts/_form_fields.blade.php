@@ -15,3 +15,13 @@
     @enderror
 </div>
 
+<div class="form-group">
+    <label for="content">Thumbnail</label>
+
+    <input class="form-control-file" type="file" name="thumbnail">
+
+    @error('thumbnail')
+    <div class="alert alert-danger">{{$message}}</div>
+    @enderror
+</div>
+

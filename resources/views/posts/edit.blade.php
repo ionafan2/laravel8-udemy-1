@@ -3,7 +3,7 @@
 @section("title", "Update post")
 
 @section('content')
-    <form action="{{route('posts.update', ['post'=> $post->id])}}" method="post">
+    <form action="{{route('posts.update', ['post'=> $post->id])}}" method="post" enctype="multipart/form-data">
         @csrf @method('PUT')
 
         @include('posts._form_fields')

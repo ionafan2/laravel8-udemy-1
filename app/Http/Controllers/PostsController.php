@@ -50,6 +50,11 @@ class PostsController extends Controller
 
         $post = BlogPost::create(array_merge($validated, ['user_id' => $request->user()->id]));
 
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $file->storeAs('thumbnails', $post->id . '.' . $file->guessExtension());
+        }
+
         $request->session()->flash('status', 'Created!');
 
         return redirect()->route('posts.show', ['post' => $post->id]);
