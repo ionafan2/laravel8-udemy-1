@@ -26,6 +26,11 @@ class BlogPost extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function image()
+    {
+        return $this->hasOne(Image::class);
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\Image;
 use Illuminate\Support\Facades\Cache;
 
 class PostsController extends Controller
@@ -51,8 +52,10 @@ class PostsController extends Controller
         $post = BlogPost::create(array_merge($validated, ['user_id' => $request->user()->id]));
 
         if ($request->hasFile('thumbnail')) {
-            $file = $request->file('thumbnail');
-            $file->storeAs('thumbnails', $post->id . '.' . $file->guessExtension());
+
+            $path = $request->file('thumbnail')->store('thumbnails');
+
+            $post->image()->save(Image::create(['path' => $path]));
         }
 
         $request->session()->flash('status', 'Created!');
