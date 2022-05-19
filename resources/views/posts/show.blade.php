@@ -7,10 +7,12 @@
         <div class="col-8">
             <h1>
                 {{ $post->title }}
-                <x-badge hide="{{ now()->diffInMinutes($post->created_at) > 10}}">New post !</x-badge>
+                <x-badge hide="{{ now()->diffInMinutes($post->created_at) > 10}}">New post!</x-badge>
             </h1>
 
             <p>{{ $post->content }}</p>
+
+            <img src="{{$post->image->url()}}" alt="" width="100%">
 
             <p>
                 <x-updated :date="$post->created_at" name="{{$post->user->name}}">Added</x-updated>
