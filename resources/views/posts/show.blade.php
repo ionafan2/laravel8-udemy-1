@@ -24,11 +24,10 @@
             <p>{{ $post->content }}</p>
 
             <p>
-                <x-updated :date="$post->created_at" :name="$post->user->name" :userId="$post->user->id">Added
-                </x-updated>
+                <x-updated :date="$post->created_at" :user="$post->user">Added</x-updated>
             </p>
             <p>
-                <x-updated :date="$post->updated_at">Updated</x-updated>
+                <x-updated :date="$post->updated_at" :user="$post->user">Updated</x-updated>
             </p>
             <p>
                 <x-tags :tags="$post->tags"></x-tags>
@@ -37,19 +36,14 @@
 
             <h4>Comments</h4>
 
-            @include('comments._form')
+            <x-comment-form route="{{route('posts.comments.store', ['post' => $post->id])}}"></x-comment-form>
 
-            @forelse($post->comments as $comment)
-                <p class="mt-3">
-                    {{$comment->content}}
-                    <x-updated :date="$post->created_at" name="{{$comment->user->name}}"></x-updated>
-                </p>
-            @empty
-                <p>No Comments yet!</p>
-            @endforelse
+            <x-comments-list :comments="$post->comments"></x-comments-list>
+
         </div>
         <div class="col-4">
             @include('posts._activity')
         </div>
     </div>
 @endsection
+

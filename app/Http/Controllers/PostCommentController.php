@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\BlogPost;
-use App\Models\Comment;
 
 class PostCommentController extends Controller
 {
