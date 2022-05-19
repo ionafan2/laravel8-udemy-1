@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Scopes\DeletedAdminScope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 
 class BlogPost extends Model
@@ -39,6 +39,11 @@ class BlogPost extends Model
     public function scopeMostCommented(Builder $qb)
     {
         return $qb->withCount('comments')->orderByDesc('comments_count');
+    }
+
+    public function scopeLatestWithRelations(Builder $qb)
+    {
+        return $qb->latest()->withCount('comments')->with('user')->with('tags');
     }
 
     public static function boot()

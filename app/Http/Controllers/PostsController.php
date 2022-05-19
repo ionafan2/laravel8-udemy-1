@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
-use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
 class PostsController extends Controller
@@ -27,7 +26,7 @@ class PostsController extends Controller
     public function index()
     {
         return view('posts.index', [
-            'posts' => BlogPost::withCount('comments')->with('user')->with('tags')->get()
+            'posts' => BlogPost::latestWithRelations()->get()
         ]);
     }
 
@@ -64,7 +63,8 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Cache::tags(['blog-post'])->remember("blog-post-{$id}", now()->addSeconds(30), function () use ($id) {
-            return BlogPost::with('comments')->with('user')->with('tags')->findOrFail($id);
+            return BlogPost::with('comments', 'tags', 'user', 'comments.user')
+                ->findOrFail($id);
         });
 
         $sessionId = session()->getId();

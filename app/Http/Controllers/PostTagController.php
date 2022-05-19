@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
-use Illuminate\Http\Request;
 
 class PostTagController extends Controller
 {
@@ -11,6 +10,8 @@ class PostTagController extends Controller
     {
         $tag = Tag::findOrFail($tagId);
 
-        return view('posts.index', ['posts' => $tag->blogPosts]);
+        return view('posts.index', [
+            'posts' => $tag->blogPosts()->latestWithRelations()->get()
+        ]);
     }
 }
