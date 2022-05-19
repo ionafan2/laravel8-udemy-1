@@ -42,7 +42,9 @@ class PostTest extends TestCase
         $post = $this->getDummyPost();
 
         Comment::factory()->count(4)->create([
-            'blog_post_id' => $post->id
+            'commentable_id' => $post->id,
+            'commentable_type' => BlogPost::class,
+            'user_id' => $this->user()->id
         ]);
 
         $response = $this->get('/posts');
