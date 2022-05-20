@@ -25,6 +25,11 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
+    }
+
     public function scopeLatest(Builder $qb)
     {
         return $qb->orderByDesc(static::CREATED_AT);
