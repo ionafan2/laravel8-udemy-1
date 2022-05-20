@@ -30,7 +30,7 @@ class PostCommentController extends Controller
 
         $request->session()->flash('status', 'Comment added!');
 
-        Mail::to($post->user)->send(
+        Mail::to($post->user)->queue(
             new CommentPostedMarkdown($comment)
         );
 
