@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
+use App\Jobs\NotifyUsersPostWasCommented;
 use App\Mail\CommentPostedMarkdown;
 use App\Models\BlogPost;
 use App\Models\Comment;
@@ -33,6 +34,8 @@ class PostCommentController extends Controller
         Mail::to($post->user)->queue(
             new CommentPostedMarkdown($comment)
         );
+
+        NotifyUsersPostWasCommented::dispatch($comment);
 
         return redirect()->back();
     }
