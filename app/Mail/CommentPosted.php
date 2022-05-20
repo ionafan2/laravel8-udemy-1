@@ -31,7 +31,10 @@ class CommentPosted extends Mailable
     public function build()
     {
         $subject = "Commented was posted on your {$this->comment->commentable->title} blog post";
-        return $this->subject($subject)
+        return $this
+            //->attach(storage_path('app/public') . '/' . $this->comment->user->image->path)
+            //->attachFromStorage($this->comment->user->image->path, 'profile.jpeg')
+            ->subject($subject)
             ->view('emails.posts.commented');
     }
 }
