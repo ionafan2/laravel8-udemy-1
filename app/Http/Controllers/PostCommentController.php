@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
+use App\Mail\CommentPosted;
 use App\Models\BlogPost;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Mail;
 
 class PostCommentController extends Controller
 {
@@ -19,12 +22,17 @@ class PostCommentController extends Controller
 
     public function store(BlogPost $post, StoreCommentRequest $request)
     {
-        $post->comments()->create([
+        /** @var Comment $comment */
+        $comment = $post->comments()->create([
             'content' => $request->input('content'),
             'user_id' => $request->user()->id,
         ]);
 
         $request->session()->flash('status', 'Comment added!');
+
+        Mail::to($post->user)->send(
+            new CommentPosted($comment)
+        );
 
         return redirect()->back();
     }
