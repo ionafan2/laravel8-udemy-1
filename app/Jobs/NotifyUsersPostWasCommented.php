@@ -6,7 +6,6 @@ use App\Mail\CommentPostedOnPostWatch;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -41,8 +40,9 @@ class NotifyUsersPostWasCommented implements ShouldQueue
             ->filter(function (User $user) {
                 return $user->id !== $this->comment->user_id;
             })->map(function (User $user) {
-                Mail::to($user)->queue(
-                    new CommentPostedOnPostWatch($this->comment, $user)
+                ThrottledMail::dispatch(
+                    new CommentPostedOnPostWatch($this->comment, $user),
+                    $user
                 );
             });
 
