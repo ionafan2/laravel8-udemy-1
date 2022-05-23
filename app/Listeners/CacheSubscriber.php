@@ -30,7 +30,7 @@ class CacheSubscriber
      */
     public function handleCacheHit(CacheHit $event)
     {
-        Log::info($event->key . " cache HIT");
+        //Log::info($event->key . " cache HIT");
     }
 
     /**
@@ -41,6 +41,6 @@ class CacheSubscriber
      */
     public function handleCacheMissed(CacheMissed $event)
     {
-        Log::info($event->key . " cache Missed");
+        //Log::info($event->key . " cache Missed");
     }
 }
