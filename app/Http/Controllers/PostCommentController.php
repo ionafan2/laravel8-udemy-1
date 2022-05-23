@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentPosted;
 use App\Http\Requests\StoreCommentRequest;
 use App\Jobs\NotifyUsersPostWasCommented;
 use App\Jobs\ThrottledMail;
@@ -31,12 +32,7 @@ class PostCommentController extends Controller
 
         $request->session()->flash('status', 'Comment added!');
 
-        ThrottledMail::dispatch(
-            new CommentPostedMarkdown($comment),
-            $post->user
-        );
-
-        NotifyUsersPostWasCommented::dispatch($comment);
+        event(new CommentPosted($comment));
 
         return redirect()->back();
     }
