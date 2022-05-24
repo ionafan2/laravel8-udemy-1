@@ -92,6 +92,9 @@ class UserControler extends Controller
             }
         }
 
+        $user->locale = $request->get('locale');
+        $user->save();
+
         $user->save();
 
         return redirect()->back()->with('status', 'Updated!');

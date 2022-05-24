@@ -11,6 +11,11 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public const LOCALES = [
+        'en' => 'English',
+        'ua' => 'Українська',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
