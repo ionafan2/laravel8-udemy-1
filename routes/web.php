@@ -1,11 +1,12 @@
 <?php /** @noinspection ALL */
 
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostTagController;
 use App\Http\Controllers\UserCommentController;
-use App\Http\Controllers\UserControler;
+use App\Http\Controllers\UserController;
 use App\Mail\CommentPostedMarkdown;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,7 @@ Route::get('/posts/tag/{id}', [PostTagController::class, 'index'])->name('posts.
 Route::resource('posts.comments', PostCommentController::class)->only(['store']);
 Route::resource('users.comments', UserCommentController::class)->only(['store']);
 
-Route::resource('user', UserControler::class)->only(['show', 'edit', 'update']);
+Route::resource('user', UserController::class)->only(['show', 'edit', 'update']);
 
 Route::get('mailable', function () {
     $comment = Comment::find(1);

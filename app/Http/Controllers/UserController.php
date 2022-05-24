@@ -9,12 +9,15 @@ use App\Services\Counter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class UserControler extends Controller
+class UserController extends Controller
 {
-    public function __construct()
+    private Counter $counter;
+
+    public function __construct(Counter $counter)
     {
         $this->middleware('auth');
         $this->authorizeResource(User::class, 'user');
+        $this->counter = $counter;
     }
 
 
@@ -57,7 +60,7 @@ class UserControler extends Controller
      */
     public function show(User $user)
     {
-        $counter = resolve(Counter::class)->increment("user-{$user->id}", ['user']);
+        $counter = $this->counter->increment("user-{$user->id}", ['user']);
 
         return view('users.show', ['user' => $user, 'counter' => $counter]);
     }
