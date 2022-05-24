@@ -57,7 +57,7 @@ class UserControler extends Controller
      */
     public function show(User $user)
     {
-        $counter = (new Counter())->increment("user-{$user->id}", ['user']);
+        $counter = resolve(Counter::class)->increment("user-{$user->id}", ['user']);
 
         return view('users.show', ['user' => $user, 'counter' => $counter]);
     }
