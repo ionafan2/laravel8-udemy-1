@@ -33,10 +33,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li><a class="p-2 text-dark" href="{{route('home.index')}}">Home</a></li>
-                        <li><a class="p-2 text-dark" href="{{route('home.contact')}}">Contact</a></li>
-                        <li><a class="p-2 text-dark" href="{{route('posts.index')}}">Blog Posts</a></li>
-                        <li><a class="p-2 text-dark" href="{{route('posts.create')}}">Create Post</a></li>
+                        <li><a class="p-2 text-dark" href="{{route('home.index')}}">{{__("app.menu.home")}}</a></li>
+                        <li><a class="p-2 text-dark" href="{{route('home.contact')}}">{{__("app.menu.contact")}}</a></li>
+                        <li><a class="p-2 text-dark" href="{{route('posts.index')}}">{{__("app.menu.blog_posts")}}</a></li>
+                        @auth
+                            <li><a class="p-2 text-dark" href="{{route('posts.create')}}">{{__("app.menu.create_post")}}</a></li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -45,13 +47,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('app.menu.user.login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('app.menu.user.register') }}</a>
                                 </li>
                             @endif
                         @else
