@@ -11,6 +11,7 @@ use App\Services\Counter;
 use App\View\Composers\ActivityComposers;
 use Illuminate\Contracts\Cache\Factory;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
             CounterContract::class,
             Counter::class
         );
+
+//        \App\Http\Resources\Comment::withoutWrapping();
+        JsonResource::withoutWrapping();
     }
 
     /**
