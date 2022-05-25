@@ -21,7 +21,13 @@ class PostCommentController extends Controller
 
     public function index(BlogPost $post)
     {
-        return $post->comments;
+        $commentsCollection = $post->comments()->with('user')
+            ->get();
+
+        return $commentsCollection->each(function (Comment $comment) {
+            $comment->makeHidden(['created_at', 'updated_at']);
+            $comment->user->makeHidden(['is_admin', 'locale', 'created_at', 'updated_at']);
+        });
     }
 
     public function store(BlogPost $post, StoreCommentRequest $request)
