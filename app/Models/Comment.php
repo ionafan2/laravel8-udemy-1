@@ -30,4 +30,16 @@ class Comment extends Model
     {
         return $qb->orderByDesc(static::CREATED_AT);
     }
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'deleted_at',
+        'commentable_type',
+        'commentable_id',
+    ];
+
 }
