@@ -6,6 +6,7 @@ use App\Events\CommentPosted;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\BlogPost;
 use App\Models\Comment;
+use App\Http\Resources\Comment as CommentResource;
 
 class PostCommentController extends Controller
 {
@@ -21,13 +22,7 @@ class PostCommentController extends Controller
 
     public function index(BlogPost $post)
     {
-        $commentsCollection = $post->comments()->with('user')
-            ->get();
-
-        return $commentsCollection->each(function (Comment $comment) {
-            $comment->makeHidden(['created_at', 'updated_at']);
-            $comment->user->makeHidden(['is_admin', 'locale', 'created_at', 'updated_at']);
-        });
+        return CommentResource::collection($post->comments);
     }
 
     public function store(BlogPost $post, StoreCommentRequest $request)

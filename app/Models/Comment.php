@@ -37,10 +37,7 @@ class Comment extends Model
      * @var array
      */
     protected $hidden = [
-        'deleted_at',
-        'commentable_type',
-        'commentable_id',
-        'user_id',
+        'deleted_at'
     ];
 
 }
