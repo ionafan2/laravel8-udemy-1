@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\CounterContract;
 use App\Events\BlogPostPosted;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
@@ -19,7 +20,7 @@ class PostsController extends Controller
      *
      * @return void
      */
-    public function __construct(Counter $counter)
+    public function __construct(CounterContract $counter)
     {
         $this->middleware('auth')->except(['index', 'show']);
         $this->counter = $counter;
