@@ -18,11 +18,9 @@ class ApiPostCommentsTest extends TestCase
      */
     public function testNewBloPostDoesNotHaveComments()
     {
-        BlogPost::factory()->create([
-            'user_id' => $this->user()->id
-        ]);
+        $this->blogPost();
 
-        $response = $this->json('GET', 'api/v1/posts/1/comments');
+        $response = $this->actingAs($this->user(), 'api')->json('GET', 'api/v1/posts/1/comments');
 
         $response->assertStatus(200)
             ->assertJsonStructure(['data', 'links', 'meta'])
@@ -31,10 +29,7 @@ class ApiPostCommentsTest extends TestCase
 
     public function testBlogPostHas10Comments()
     {
-
-        BlogPost::factory()->create([
-            'user_id' => $this->user()->id
-        ])->each(function (BlogPost $post) {
+        $this->blogPost()->each(function (BlogPost $post) {
             $post->comments()->saveMany(
                 Comment::factory()->count(10)->make([
                     'user_id' => $this->user()->id
@@ -42,7 +37,7 @@ class ApiPostCommentsTest extends TestCase
             );
         });
 
-        $response = $this->json('GET', 'api/v1/posts/2/comments');
+        $response = $this->actingAs($this->user(), 'api')->json('GET', 'api/v1/posts/2/comments');
 
         $response->assertStatus(200)
             ->assertJsonStructure(
@@ -65,4 +60,46 @@ class ApiPostCommentsTest extends TestCase
             )
             ->assertJsonCount(10, 'data');
     }
+
+    public function testAddingCommentsWhenNotAuthenticated()
+    {
+        $this->blogPost();
+
+        $response = $this->json('POST', 'api/v1/posts/3/comments', [
+            'content' => 'Hello'
+        ]);
+
+        $response->assertStatus(401);
+    }
+
+    public function testAddingCommentsWhenAuthenticated()
+    {
+        $this->markTestSkipped('Issue with Redis');
+
+        $this->blogPost();
+
+        $response = $this->actingAs($this->user(), 'api')->json('POST', 'api/v1/posts/4/comments', [
+            'content' => 'Hello'
+        ]);
+
+        $response->assertStatus(201);
+    }
+
+    public function testAddingCommentWithInvalidData()
+    {
+        $this->blogPost();
+
+        $response = $this->actingAs($this->user(), 'api')->json('POST', 'api/v1/posts/4/comments', []);
+
+        $response->assertStatus(422)
+            ->assertJson([
+                "message" => "The given data was invalid.",
+                "errors" => [
+                    "content" => [
+                        "The content field is required."
+                    ]
+                ]
+            ]);
+    }
+
 }
