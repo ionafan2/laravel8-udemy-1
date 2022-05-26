@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::middleware('auth:api')->prefix('/v1')->name('api.v1.')->group(function () {
+Route::prefix('/v1')->name('api.v1.')->group(function () {
 
     Route::get('/status', function () {
         return response()->json(['status' => 'ok']);
