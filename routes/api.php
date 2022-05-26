@@ -37,3 +37,7 @@ Route::prefix('/v2')->name('api.v2.')->group(function () {
     })->name('status');
 
 });
+
+Route::fallback(function () {
+   return response()->json(['not found'], 404);
+});
